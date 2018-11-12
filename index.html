@@ -1,5 +1,6 @@
-http://blockbuilder.org/tacastillo/b6d0ad90bc8b9b9e329b7cca92c60f75
+
 <!DOCTYPE html>
+<html lang="en">
 <head>
 <style type="text/css">
 		.general{			
@@ -140,18 +141,37 @@ http://blockbuilder.org/tacastillo/b6d0ad90bc8b9b9e329b7cca92c60f75
 
 		
 	</style>
+	
+	<link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet"> 
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 	</head>
 <meta charset="utf-8">
+</head>
+<body>
+<div class="container general">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10" id="viz">
+<br/>
 
-
-
+  <div class="col-md-12">
+  <p>
+  economica, credito, servicio, riesgo, cuenta, inversion, publico, social, financiera, fondo, empresa, superintendencia, transporte, venta, produccion, republica, banco, persona, ambiental, moneda, tasa, planeacion, ingreso, proceso, interes, desarrollo, pension, financiero, finanza, consumo, pais, institucion, investigacion, vivienda, saldo, instituto, banca, accion, transferencia, salud, tarjeta, establecimiento, comercial, compra, educacion, derecho, sociedad, leasing, dnp, mercado, seguro, cartera.</p>
+  </div>
+<div class="autocomplete" style="">
+    <input id="myInput" type="text" name="myCountry" placeholder="Escriba una palabra clave" value="">
+	  <input id="buttonF" class="btn btn-info" type="submit" value="Actualizar Visualización">
+  </div>
 <h2> RRAA y OOEE relacionados con: </h2> 
 
+
+<div class="span7 center">
 <svg width="700" height="500" viewBox="-700 -250 1400 500">
   <circle r="100" stroke="brown" stroke-opacity="0.5" fill="none"></circle>
   <circle r="200" stroke="steelblue" stroke-opacity="0.5" fill="none"></circle>
 </svg>
-
+</div>
     
 <script src="auto-complete.js"></script>
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -451,22 +471,7 @@ d3.select('#buttonF')
 
 
 </script>
-  <div class="autocomplete" style="width:300px;">
-    <input id="myInput" type="text" name="myCountry" placeholder="Escriba una palabra clave" value="">
-	  <input id="buttonF" type="submit">
-  </div>
-  <div>
-  economica,credito,servicio,riesgo,cuenta,inversion,publico,social,financiera,fondo,empresa,superintendencia,transporte,venta,produccion,republica,banco,persona,ambiental,moneda,tasa,planeacion,ingreso,proceso,interes,desarrollo,pension,financiero,finanza,consumo,pais,institucion,investigacion,vivienda,saldo,instituto,banca,accion,transferencia,salud,tarjeta,establecimiento,comercial,compra,educacion,derecho,sociedad,leasing,dnp,mercado,seguro,cartera
-  Leyenda, instrucciones,
-  </div>
-      <table class="objecttable">
-     <thead>
-     <tr><th>Tipo</th><th>Nombre del Nodo</th><th>Puntaje</th><th>Keyword</th></tr>
-     </thead>
-     <tbody></tbody>
-    </table>
-<!--Make sure the form has the autocomplete function switched off:-->
-  
+
 <script>
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
@@ -572,3 +577,22 @@ var countries = ['economica','credito','servicio','riesgo','cuenta','inversion',
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("myInput"), countries);
 </script>
+</div>
+</div>
+</div>
+<div class="container general">
+  <div class="row">
+    <div class="col-md-offset-1 col-md-10" id="viz">
+  
+     <table class="table objecttable table-striped ">
+     <thead class="thead-dark">
+     <tr><th>Tipo</th><th>Nombre del Nodo</th><th>Puntaje</th><th>Keyword</th></tr>
+     </thead>
+     <tbody></tbody>
+    </table>
+<!--Make sure the form has the autocomplete function switched off:-->
+  
+</div>
+</div>
+</div>
+</body>
