@@ -253,7 +253,7 @@ var node = d3.select("svg")
   .selectAll("circle")
   .data(nodes)
   .enter().append("circle")
-    .attr("r", 6.5)
+    .attr("r", 7)
     .attr("fill", function(d) { return d.type === "RRAA" ? "deeppink" : "cyan"; })
 	.on("mouseover", function(d) {
 				div.transition()
@@ -284,7 +284,7 @@ var calculus =0;
 
 var simulation = d3.forceSimulation(nodes)
     .force("r", forceRadial(function(d){return coincidence(d);}))
-    .force("charge", d3.forceCollide().radius(7))//d3.forceCollide().radius((function(d){ return radioBub(d)})+2))
+    .force("charge", d3.forceCollide().radius(8))//d3.forceCollide().radius((function(d){ return radioBub(d)})+2))
     //.force("r", forceRadial(function(d) { return d.type === "OOEE2" ? 0 : Math.floor(Math.random() * 300); ; }))
 	.on("tick", ticked);
 
@@ -617,7 +617,7 @@ autocomplete(document.getElementById("myInput"), countries);
 	<h2>Visualización Tarea 3. (Tabla)</h2>
 	La siguiente tabla permite ver los nodos de la visualización anterior ordenados por relevancia.
 	<BR/>
-	A continuación podrá encontrar cuál es la Operación Estadística o Registro administrativo más relevante en un tema determinado (palabra clave).
+	En la <strong>primera posición</strong> podrá encontrar cuál es la Operación Estadística o Registro administrativo más relevante en un tema determinado (palabra clave).
 	<BR/>
 	<BR/>
      <table class="table  table-striped tabla objecttable">
