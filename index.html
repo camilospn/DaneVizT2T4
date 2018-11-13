@@ -169,17 +169,28 @@
     <div class="col-md-offset-1 col-md-10" id="viz">
 <br/>
 
-  <div class="col-md-12">
-  
+  <div class="text-justify">
+  <h2>Visualización Tarea 2. (Gráfico Radial)</h2>
+	La siguiente visualización permite escoger un tema (palabra clave) de interés y mostrar los Registros Administrativos y Operaciones estadísticas más relevantes alrededor de ese tema.
+	<BR/>
+	<h3>Instrucciones:</h3>
+	-Escriba una palabra clave y elija una opción del autocompletar.
+	<BR/>-Presione el botón "Actualizar Visualización" para realizar el filtro.
+	<BR/>-A continuación podrá ver los registros y operaciones estadísticas más relevantes del tema seleccionado en el centro del círculo.
+	<BR/>-Colocando el Mouse sobre un punto podrá ver el nombre del Registro u Operación y su tipo.
+	
+	<BR/>
   <p class="text-justify">
+  <h3>Lista de Palabras claves del demo</h3>
   economica, credito, servicio, riesgo, cuenta, inversion, publico, social, financiera, fondo, empresa, superintendencia, transporte, venta, produccion, republica, banco, persona, ambiental, moneda, tasa, planeacion, ingreso, proceso, interes, desarrollo, pension, financiero, finanza, consumo, pais, institucion, investigacion, vivienda, saldo, instituto, banca, accion, transferencia, salud, tarjeta, establecimiento, comercial, compra, educacion, derecho, sociedad, leasing, dnp, mercado, seguro, cartera.</p>
   </p>
   </div>
-<div class="autocomplete" style="">
-    <input id="myInput" type="text" name="myCountry" placeholder="Escriba una palabra clave" value="">
+<div class="autocomplete" >
+    <input id="myInput" type="text" name="myCountry" placeholder="Escriba una palabra clave de la lista anterior" style="width:400px;" value="">
 	  <input id="buttonF" class="btn btn-info" type="submit" value="Actualizar Visualización">
   </div>
-<h2> RRAA y OOEE relacionados con: </h2> 
+<h3> <span class="rrColor">RRAA: Registros Administrativos</span> </h3> 
+<h3> <span class="ooColor">OOEE: Operaciones Estadísticas</span> </h3> 
 
 
 <div class="center">
@@ -473,7 +484,7 @@ function constant(x) {
 }
 d3.select('#buttonF')
 		.on("click", function () {
-	    var selectedValue = d3.select('#myInput').property('name');
+	    var selectedValue = d3.select('#myInput').property('value');
 			//console.log(selectedValue);
 			pex(selectedValue);
 		});
@@ -602,8 +613,11 @@ autocomplete(document.getElementById("myInput"), countries);
 <div class="container general">
   <div class="row">
   
-    <div class="col-md-offset-1 col-md-10">
-	La siguiente tabla permite ver los nodos ordenados por puntaje.
+    <div class="col-md-offset-1 col-md-10 text-justify">
+	<h2>Visualización Tarea 3. (Tabla)</h2>
+	La siguiente tabla permite ver los nodos de la visualización anterior ordenados por relevancia.
+	<BR/>
+	A continuación podrá encontrar cuál es la Operación Estadística o Registro administrativo más relevante en un tema determinado (palabra clave).
 	<BR/>
 	<BR/>
      <table class="table  table-striped tabla objecttable">
