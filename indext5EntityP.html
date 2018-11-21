@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<body>
+    <style>
+    html {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+    
+    .button {
+      position: absolute;
+      bottom: 1px;
+      padding: 10px 20px;
+      font-size: 1em;
+      text-align: center;
+      background: #FFF;
+      border-radius: 5px;
+      border: 1px solid #DDD;
+    }
+    .button:hover {
+      background: #CCC;
+      cursor: pointer;
+    }
+    #locations {
+      right: 10px;
+    }
+    #systems {
+      right: 10px;
+      bottom: 50px;
+    }
+    /* svg { border: solid purple; }
+    g { border: solid blue; } */
+    </style>
+    <button id="locations" class="button">Macro-temas</button>
+    <button id="systems" class="button">Micro-temas</button>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script>
+	console.clear();
+        d3.json('fulldata2.json')
+		//d3.json('https://raw.githubusercontent.com/pierreraimbaud/DANEColombiaStatisticOperationsAdminRegisters/master/data/data.json')
+		
+            .then(function(data) {
+                console.log(data)
+                data = data.filter(d => d.entityProducing != "");
+
+				//separa por temas horizontal
+                var locations = [...new Set(data.map(d => d.thematic))];
+				console.log('locations', locations)
+                var nodes = [...new Set(data.map(d => d.type))];
+				//separa por temas vertical
+                var systems = [...new Set(data.map(d => d.entityProducing))]
+
+                console.log('systems', systems)
+             
+				//creamos el SVG
+                var margin = {left: 80, top: 20, right: 20, bottom: 20},
+                    width = 1200 - margin.left - margin.right,
+                    height = 1000 - margin.top - margin.bottom;
+                var svg = d3.select('body').append('svg')
+                        .attr('width', width + margin.left + margin.right)
+                        .attr('height', height + margin.top + margin.bottom)
+                        .append('g')
+                        .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+                
+				//la escala horizontal (clusters)
+                var locScale = d3.scalePoint()
+                    .range([margin.left,width-margin.right*6])
+                    .domain(locations)
+                    .padding(0.5);
+
+                var sysScale = d3.scalePoint()
+                    .range([height-margin.bottom,margin.top*4])
+                    .domain(systems)
+                    .padding(0.1);
+					
+				//not sure about this following part
+                var countScale = d3.scaleLinear()
+                    .range([5,200])
+                    .domain(d3.extent(data, d => d.Count));
+				
+				//categorias
+                var nodeScale = d3.scaleOrdinal(d3.schemeCategory10)
+                    .domain([...new Set(data.map(d => d.type))]);
+
+                //nodeLeg();
+
+                //countLeg();
+
+                var locationsLables = svg.selectAll('text.locLables')
+                    .data(locScale.domain())
+                    .enter().append('text')
+                    .attr('class', 'locLables')
+                    .text(d => d)
+                    .attr('x', width/2)
+                    .attr('y', margin.top*3)
+                    .attr('text-anchor', 'middle')
+                    .attr('fill', '#fff');
+
+                var sysLables = svg.selectAll('text.sysLables')
+                    .data(sysScale.domain())
+                    .enter().append('text')
+                    .attr('class', 'sysLables')
+                    .text(d => d)
+                    .attr('x', -30)
+                    .attr('y', 0)
+                    .attr('text-anchor', 'left')
+					.attr('font-size', '12px')
+                    .attr('fill', '#fff')
+
+				//fuerza dada por un categorico	para separar en x y en y
+                var xLocForce = d3.forceX(d => locScale(d.thematic));
+                var ySysForce = d3.forceY(d => sysScale(d.entityProducing));
+                var locactionSplit = false;
+                var systemSplit = false;
+				
+				//lo separa con el boton
+                document.getElementById('locations').onclick = function() {
+                    if (!locactionSplit) {
+                        simulation.force('x', xLocForce);
+                        locationsLables.transition()
+                            .attr('x', d => locScale(d))
+                            .attr('fill', '#777')
+                    } else {
+                        simulation.force('x', centerXForce);
+                        locationsLables.transition()
+                            .attr('x', width/2)
+                            .attr('fill', '#fff')
+                    }
+                    locactionSplit = !locactionSplit;
+
+                    simulation.alpha(1).restart();
+                }
+
+                document.getElementById('systems').onclick = function() {
+                    if (!systemSplit) {
+						//svg.transition().attr('height',2000);
+                        simulation.force('y', ySysForce);
+                        sysLables.transition()
+                            .attr('y', d => sysScale(d))
+                            .attr('fill', '#777')
+                    } else {
+                        simulation.force('y', centerYForce);
+                        sysLables.transition()
+                            .attr('y', height - height/2)
+                            .attr('fill', '#fff')
+                    }
+                    systemSplit = !systemSplit;
+
+                    simulation.alpha(1).restart();
+                }
+                
+				//inicializa las fuerzas
+                var chargeForce = d3.forceManyBody().strength(-5)
+                var centerXForce = d3.forceX(width/2);
+                var centerYForce = d3.forceY(height/2);
+                var forceCollide = d3.forceCollide()
+                    .strength(1)
+                    .radius(d => countScale(d.Count) + 10)
+                    .iterations(0);
+                var simulation = d3.forceSimulation()
+                    .force('charge', chargeForce)
+					//la fuerza de collide solo coloca lenta la animacion -.-
+                    //.force('collide', forceCollide)
+					//.force('friction', 0.9)
+                    .force('x', centerXForce)
+                    .force('y', centerYForce);
+				   
+	var iterations=0;
+      var startTime = Date.now();
+	  
+	  
+	  				simulation
+					.nodes(data)
+					.on("tick", ticked);
+					
+				    //simulation.friction(0.8);
+
+                var node = svg.selectAll('circle')
+                    .data(data)
+                    .enter().append('circle')
+					//.attr('class', d.id)
+                    .attr('r', 5)//countScale(d.Count)) //d => d.id)
+                    .attr('fill', d => nodeScale(d.type));
+
+                //simulation.nodes(data)
+                    //.on('tick', () => {
+                    //    node.attr('cx', d => d.x)
+                    //        .attr('cy', d => d.y);
+                    //});
+				
+
+				
+				//simulation.stop();
+				//simulation.tick(3);
+				//simulation.restart();
+				
+				
+
+				// on each tick, update node and link positions
+				function ticked() {
+					//link.attr("d", positionLink);
+					node.attr("transform", positionNode);
+				}
+				
+				    // move the node based on forces calculations
+				function positionNode(d) {
+					// keep the node within the boundaries of the svg
+					if (d.x < 0) {
+						d.x = 0
+					};
+					if (d.y < 0) {
+						d.y = 0
+					};
+					if (d.x > width) {
+						d.x = width
+					};
+					if (d.y > height) {
+						d.y = height
+					};
+					return "translate(" + d.x + "," + d.y + ")";
+				}
+				
+               
+                function nodeLeg () {
+                    
+                    var nodeLegend = svg.append('g')
+                        .attr('transform', 'translate(' + (width - margin.right*5) + ',' + height/2  + ')')
+                        .selectAll('g')
+                            .data(nodeScale.domain())
+                            .enter().append('g')
+                            .attr('transform', (d,i) => 'translate(' + [0, i*20] + ')')
+                    nodeLegend.append('text')
+                        .text(d => d)
+                    nodeLegend.append('circle')
+                        .attr('fill', d => nodeScale(d))
+                        .attr('cx', -10)
+                        .attr('cy', -5)
+                        .attr('r', 7)
+                }
+
+                function countLeg () {
+                    var countLegend = svg.append('g')
+                        .attr('transform', 'translate(' + (width - margin.right*5) + ',' + height*(3/4)  + ')')
+                        .selectAll('g')
+                            .data(countScale.domain())
+                            .enter().append('g')
+                            
+
+                    countLegend.append('circle')
+                        .attr('cx', 0)
+                        .attr('cy', d => -countScale(d)/2)
+                        .attr('r', d => countScale(d))
+                        .attr('fill', 'none')
+                        .attr('stroke', 'black')
+                        .attr('stroke-width', 2)
+                }
+            });
+
+    </script>
+</body>
