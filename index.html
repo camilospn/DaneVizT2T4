@@ -8,10 +8,10 @@
 			font-size: 18px;			
 		}
 		.rrColor{			
-			background-color: #ff1493;			
+			background-color: #1f77b4;			
 		}
 		.ooColor{			
-			background-color: cyan;			
+			background-color: #ff7f0e;			
 		}
 		.headerT{			
 			background-color: black;
@@ -254,7 +254,7 @@ var node = d3.select("svg")
   .data(nodes)
   .enter().append("circle")
     .attr("r", 7)
-    .attr("fill", function(d) { return d.type === "RRAA" ? "deeppink" : "cyan"; })
+    .attr("fill", function(d) { return d.type === "RRAA" ? "#1f77b4" : "#ff7f0e"; })
 	.on("mouseover", function(d) {
 				div.transition()
 				.duration(200)
@@ -288,9 +288,12 @@ var simulation = d3.forceSimulation(nodes)
     //.force("r", forceRadial(function(d) { return d.type === "OOEE2" ? 0 : Math.floor(Math.random() * 300); ; }))
 	.on("tick", ticked);
 
-
+	let iter =0;
 function ticked() {
-  node
+
+	//frame skip
+	if (iter++ % 2 !==0){return;}
+	node
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; });
 	  
